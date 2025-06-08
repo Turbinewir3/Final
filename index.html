@@ -7,9 +7,8 @@
     body {
       background-color: #111;
       color: #eee;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       padding: 2rem;
-      line-height: 1.6;
     }
     .container {
       max-width: 600px;
@@ -17,7 +16,7 @@
       background: #1c1c1c;
       padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 12px rgba(255,255,255,0.1);
     }
     h1, h2 {
       text-align: center;
@@ -25,23 +24,27 @@
     select, button {
       width: 100%;
       padding: 10px;
-      margin: 0.5rem 0 1rem 0;
+      margin-top: 0.5rem;
       border-radius: 8px;
       border: none;
       background-color: #333;
       color: #fff;
     }
     button:hover {
-      background-color: #555;
+      background-color: #444;
     }
     .question {
       margin-bottom: 1.5rem;
     }
+    label {
+      display: block;
+      margin-top: 0.5rem;
+    }
     .result {
-      padding: 1rem;
       margin-top: 2rem;
-      background: #222;
-      border-radius: 8px;
+      background-color: #222;
+      padding: 1rem;
+      border-radius: 10px;
     }
   </style>
 </head>
@@ -49,20 +52,20 @@
   <div class="container">
     <h1>The Virtue Mirror</h1>
     <h2>Identity Declaration</h2>
-    
+
     <label>I am:</label>
     <select id="identity">
       <option>Young Liberal</option>
-      <option>Conservative Veteran</option>
-      <option>Progressive Activist</option>
+      <option>Old Conservative</option>
+      <option>Academic Progressive</option>
       <option>Rural Libertarian</option>
     </select>
 
     <label>Opposed to:</label>
     <select id="opposed">
       <option>Street Protesters</option>
+      <option>Youth Culture</option>
       <option>Corporate Elites</option>
-      <option>Religious Traditionalists</option>
       <option>University Professors</option>
     </select>
 
@@ -70,11 +73,24 @@
 
     <div id="quiz" style="display:none;">
       <div class="question">
-        <p>Would you defend someone’s right to protest if they belonged to the group you oppose?</p>
-        <label><input type="radio" name="q1" value="yes"> Yes</label><br/>
+        <p>1. Should people be allowed to protest, even if you disagree with them?</p>
+        <label><input type="radio" name="q1" value="yes"> Yes</label>
         <label><input type="radio" name="q1" value="no"> No</label>
       </div>
-      <button onclick="showResults()">Submit Answer</button>
+
+      <div class="question">
+        <p>2. If someone from your group committed a wrong, should they be held equally accountable?</p>
+        <label><input type="radio" name="q2" value="yes"> Yes</label>
+        <label><input type="radio" name="q2" value="no"> No</label>
+      </div>
+
+      <div class="question">
+        <p>3. If facts contradict your belief, would you change your mind?</p>
+        <label><input type="radio" name="q3" value="yes"> Yes</label>
+        <label><input type="radio" name="q3" value="no"> No</label>
+      </div>
+
+      <button onclick="showResults()">Submit Answers</button>
     </div>
 
     <div id="results" class="result" style="display:none;"></div>
@@ -92,24 +108,43 @@
 
     function showResults() {
       const q1 = document.querySelector('input[name="q1"]:checked');
-      if (!q1) {
-        alert("Please answer the question.");
+      const q2 = document.querySelector('input[name="q2"]:checked');
+      const q3 = document.querySelector('input[name="q3"]:checked');
+
+      if (!q1 || !q2 || !q3) {
+        alert("Please answer all questions.");
         return;
       }
 
-      const answer = q1.value;
-      const portrayed = answer === 'yes' ? 1 : 0;
-      const revealed = answer === 'yes' ? 1 : 0; // Placeholder for more advanced logic
+      // Raw scores
+      let portrayedScore = 0;
+      portrayedScore += q1.value === "yes" ? 1 : 0;
+      portrayedScore += q2.value === "yes" ? 1 : 0;
+      portrayedScore += q3.value === "yes" ? 1 : 0;
 
-      let message = `<strong>Your identity:</strong> ${identity} opposed to ${opposed}<br/>`;
-      message += `<strong>You answered:</strong> ${answer.toUpperCase()}<br/>`;
-      message += `<strong>Portrayed Virtue Score:</strong> ${portrayed}/1<br/>`;
-      message += `<strong>Revealed Virtue Score:</strong> ${revealed}/1<br/>`;
-      message += `<em>This is just the beginning. More virtue challenges coming soon!</em>`;
+      // Reveal logic: if you're opposed to protestors but say "yes" to Q1, call out potential inconsistency
+      let revealedScore = portrayedScore;
+      if (opposed.includes("Protester") && q1.value === "yes") revealedScore -= 1;
+      if (identity.includes("Conservative") && q3.value === "no") revealedScore -= 1;
+      if (identity.includes("Liberal") && q2.value === "no") revealedScore -= 1;
 
-      document.getElementById('quiz').style.display = 'none';
-      document.getElementById('results').style.display = 'block';
-      document.getElementById('results').innerHTML = message;
+      revealedScore = Math.max(0, revealedScore); // Prevent negative scores
+
+      // Output
+      const resultBox = document.getElementById("results");
+      resultBox.style.display = 'block';
+      resultBox.innerHTML = `
+        <strong>Your identity:</strong> ${identity}<br/>
+        <strong>Opposed to:</strong> ${opposed}<br/><br/>
+        <strong>Portrayed Virtue Score:</strong> ${portrayedScore}/3<br/>
+        <strong>Revealed Virtue Score:</strong> ${revealedScore}/3<br/><br/>
+        ${revealedScore < portrayedScore ? 
+          "<em>Some of your answers may conflict with your stated opposition or identity.</em>" :
+          "<em>Your answers appear consistent with your values.</em>"
+        }
+      `;
+
+      document.getElementById("quiz").style.display = 'none';
     }
   </script>
 </body>
