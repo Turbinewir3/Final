@@ -47,7 +47,7 @@ function showStep() {
     return;
   }
 
-  const label = document.createElement("h3");
+  const label = document.createElement("h2");
   label.innerText = stepData.label;
   container.appendChild(label);
 
@@ -67,20 +67,18 @@ function showStep() {
 function finishSelections() {
   const container = document.getElementById("question-container");
   container.innerHTML = `
-    <h3>You identified as:</h3>
-    <p>${identitySelections.join(", ")}</p>
-    <h3>You are opposed to:</h3>
-    <p>${opposedSelections.join(", ")}</p>
+    <h2>Your Selected Identity</h2>
+    <p><strong>I am:</strong> ${identitySelections.join(", ")}</p>
+    <p><strong>Opposed to:</strong> ${opposedSelections.join(", ")}</p>
     <button onclick="startVirtueTest()">Start Virtue Test</button>
   `;
 }
 
 function startVirtueTest() {
   const container = document.getElementById("question-container");
-  container.innerHTML = `<p>Loading virtue test based on your profile...</p>`;
+  container.innerHTML = `<p>Virtue test loading...</p>`;
 }
 
-// Load on page ready
 window.onload = () => {
   startIdentityInput();
 };
