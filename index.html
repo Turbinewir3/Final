@@ -1,12 +1,126 @@
-The Virtue Mirror body { background-color: #111; color: #eee; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 2rem; line-height: 1.6; } .container { max-width: 600px; margin: auto; background: #1c1c1c; padding: 2rem; border-radius: 12px; box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); } h1, h2 { text-align: center; } button { background-color: #444; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 1rem; } button:hover { background-color: #666; } .question { margin-bottom: 1.5rem; } .result { padding: 1rem; margin-top: 2rem; background: #222; border-radius: 8px; } 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Virtue Mirror</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #eee;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 2rem;
+      line-height: 1.6;
+    }
 
-The Virtue Mirror <div id="quiz"> <h2>Identity Declaration</h2> <p>I am:</p> <select id="identity"> <option value="young liberal">Young Liberal</option> <option value="older conservative">Older Conservative</option> <option value="nonconforming intellectual">Nonconforming Intellectual</option> </select> <p>Opposed to:</p> <select id="opposed"> <option value="corporate elites">Corporate Elites</option> <option value="woke culture">Woke Culture</option> <option value="traditionalists">Traditionalists</option> </select> <button onclick="startQuiz()">Start Questions</button> </div> <div id="questions" style="display: none"> <h2>Virtue Scenario</h2> <div class="question"> <p>A politician from your opposing group proposes a universal healthcare policy that experts agree will help millions. Do you support it?</p> <label><input type="radio" name="q1" value="yes" /> Yes</label><br /> <label><input type="radio" name="q1" value="no" /> No</label> </div> <button onclick="showResults()">Reveal Virtue</button> </div> <div id="results" class="result" style="display: none"></div> 
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #1c1c1c;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
 
-let identity = ''; let opposed = ''; function startQuiz() { identity = document.getElementById('identity').value; opposed = document.getElementById('opposed').value; document.getElementById('quiz').style.display = 'none'; document.getElementById('questions').style.display = 'block'; } function showResults() { const q1 = document.querySelector('input[name="q1"]:checked'); if (!q1) { alert('Please answer the question.'); return; } const answer = q1.value; const portrayed = answer === 'yes' ? 1 : 0; const revealed = answer === 'yes' ? 1 : 0; // future logic for identity switch let message = `Your identity: ${identity} opposed to ${opposed}
+    h1, h2 {
+      text-align: center;
+    }
 
-`; message += `You answered: ${answer.toUpperCase()}
+    button {
+      background-color: #444;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
 
-`; message += `Portrayed Virtue Score: ${portrayed}/1
-`; message += `Revealed Virtue Score: ${revealed}/1
+    button:hover {
+      background-color: #666;
+    }
 
-`; message += `This is just the beginning. More virtue challenges coming soon!`; document.getElementById('questions').style.display = 'none'; document.getElementById('results').innerHTML = message; document.getElementById('results').style.display = 'block'; } 
+    .question {
+      margin-bottom: 1.5rem;
+    }
+
+    .result {
+      padding: 1rem;
+      margin-top: 2rem;
+      background-color: #222;
+      border-radius: 8px;
+    }
+
+    select {
+      margin-bottom: 1rem;
+      width: 100%;
+      padding: 0.5rem;
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #555;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>The Virtue Mirror</h1>
+
+    <div id="quiz">
+      <h2>Identity Declaration</h2>
+      <p>I am:</p>
+      <select id="identity">
+        <option value="Young Liberal">Young Liberal</option>
+        <option value="Old Conservative">Old Conservative</option>
+        <option value="Anarchist">Anarchist</option>
+        <option value="Technocrat">Technocrat</option>
+        <option value="Patriot">Patriot</option>
+      </select>
+
+      <p>Opposed to:</p>
+      <select id="opposed">
+        <option value="Corporate Elites">Corporate Elites</option>
+        <option value="Street Protesters">Street Protesters</option>
+        <option value="The State">The State</option>
+        <option value="Academics">Academics</option>
+        <option value="Youth Culture">Youth Culture</option>
+      </select>
+
+      <button onclick="startQuiz()">Begin Virtue Test</button>
+    </div>
+
+    <div id="questions" style="display: none;">
+      <div class="question">
+        <p>If someone from your *opposing group* said something true, would you acknowledge it?</p>
+        <label><input type="radio" name="q1" value="yes" /> Yes</label><br/>
+        <label><input type="radio" name="q1" value="no" /> No</label>
+      </div>
+
+      <button onclick="showResults()">Submit Answer</button>
+    </div>
+
+    <div id="results" class="result" style="display: none;"></div>
+  </div>
+
+  <script>
+    let identity = '';
+    let opposed = '';
+
+    function startQuiz() {
+      identity = document.getElementById('identity').value;
+      opposed = document.getElementById('opposed').value;
+
+      document.getElementById('quiz').style.display = 'none';
+      document.getElementById('questions').style.display = 'block';
+    }
+
+    function showResults() {
+      const q1 = document.querySelector('input[name="q1"]:checked');
+      if (!q1) {
+        alert('Please answer the question.');
+        return;
+      }
+
+      const answer = q1.value;
+      const portrayed = answer === 'yes' ? 1 : 0;
+      const revealed = answer === 'yes
