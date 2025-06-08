@@ -1,22 +1,22 @@
 const identitySteps = [
   {
-    label: "Select your AGE group:",
+    label: "Step 1: How old are you?",
     options: ["Young", "Middle-aged", "Older"]
   },
   {
-    label: "Select your EDUCATION level:",
-    options: ["No degree", "High school", "College", "Advanced"]
+    label: "Step 2: Your education level?",
+    options: ["No degree", "High school", "College", "Advanced degree"]
   },
   {
-    label: "Select your view on AUTHORITY:",
+    label: "Step 3: Your view on authority?",
     options: ["Skeptical", "Neutral", "Respectful"]
   }
 ];
 
 const opposedSteps = [
   {
-    label: "You feel most opposed to:",
-    options: ["Rich elites", "Conspiracy theorists", "The uneducated", "The overly educated", "Boomers", "Zoomers"]
+    label: "Step 4: Who do you feel most opposed to?",
+    options: ["The rich", "The poor", "Elites", "Ignorant people", "Religious", "Secular"]
   }
 ];
 
@@ -35,28 +35,28 @@ function showStep() {
   const container = document.getElementById("question-container");
   container.innerHTML = "";
 
-  let step, group;
+  let stepData, storageArray;
   if (currentStep < identitySteps.length) {
-    step = identitySteps[currentStep];
-    group = identitySelections;
+    stepData = identitySteps[currentStep];
+    storageArray = identitySelections;
   } else if (currentStep < identitySteps.length + opposedSteps.length) {
-    step = opposedSteps[currentStep - identitySteps.length];
-    group = opposedSelections;
+    stepData = opposedSteps[currentStep - identitySteps.length];
+    storageArray = opposedSelections;
   } else {
     finishSelections();
     return;
   }
 
   const label = document.createElement("h3");
-  label.innerText = step.label;
+  label.innerText = stepData.label;
   container.appendChild(label);
 
-  step.options.forEach(option => {
+  stepData.options.forEach(option => {
     const btn = document.createElement("button");
-    btn.innerText = option;
     btn.className = "option-button";
+    btn.innerText = option;
     btn.onclick = () => {
-      group.push(option);
+      storageArray.push(option);
       currentStep++;
       showStep();
     };
@@ -67,21 +67,20 @@ function showStep() {
 function finishSelections() {
   const container = document.getElementById("question-container");
   container.innerHTML = `
-    <h3>Your identity:</h3>
+    <h3>You identified as:</h3>
     <p>${identitySelections.join(", ")}</p>
-    <h3>You're opposed to:</h3>
+    <h3>You are opposed to:</h3>
     <p>${opposedSelections.join(", ")}</p>
     <button onclick="startVirtueTest()">Start Virtue Test</button>
   `;
 }
 
-// Placeholder for actual test flow
 function startVirtueTest() {
   const container = document.getElementById("question-container");
-  container.innerHTML = "<p>Virtue test coming next...</p>";
+  container.innerHTML = `<p>Loading virtue test based on your profile...</p>`;
 }
 
-// Start flow on page load
+// Load on page ready
 window.onload = () => {
   startIdentityInput();
 };
