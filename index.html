@@ -1,129 +1,41 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Virtue Score Tool</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      transition: background-color 0.3s, color 0.3s;
-    }
-    :root {
-      --bg: #121212;
-      --text: #ffffff;
-      --card: #1e1e1e;
-      --button: #007f00;
-    }
-    .light-theme {
-      --bg: #f5f5f5;
-      --text: #000000;
-      --card: #ffffff;
-      --button: #007f00;
-    }
-    .container {
-      max-width: 600px;
-      margin: 2em auto;
-      padding: 2em;
-      background-color: var(--card);
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    }
-    h1 {
-      text-align: center;
-    }
-    label {
-      display: block;
-      margin: 1em 0 0.5em;
-    }
-    select, button {
-      width: 100%;
-      padding: 0.7em;
-      font-size: 1em;
-      margin-bottom: 1em;
-      border-radius: 8px;
-      border: none;
-    }
-    button {
-      background-color: var(--button);
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    #result {
-      text-align: center;
-      margin-top: 1em;
-    }
-    .theme-toggle {
-      text-align: center;
-      margin-bottom: 1em;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="theme-toggle">
-      <button onclick="toggleTheme()">Switch Theme</button>
-    </div>
-    <h1>Virtue Score Tool</h1>
-    <form id="virtue-form">
-      <label for="identity">I am...</label>
-      <select id="identity" required>
-        <option value="">Select Identity</option>
-        <option value="Black, Female, LGBTQ+, Progressive">Black, Female, LGBTQ+, Progressive</option>
-        <option value="White, Male, Straight, Conservative">White, Male, Straight, Conservative</option>
-        <option value="Young, Educated, Liberal">Young, Educated, Liberal</option>
-        <option value="Old, Traditional, Religious">Old, Traditional, Religious</option>
-      </select>
-
-      <label for="opponent">...opposed to...</label>
-      <select id="opponent" required>
-        <option value="">Select Opposing Identity</option>
-        <option value="conservative ideas">conservative ideas</option>
-        <option value="liberal ideals">liberal ideals</option>
-        <option value="authoritative figures">authoritative figures</option>
-        <option value="ignorant youth">ignorant youth</option>
-      </select>
-
-      <button type="button" onclick="calculateVirtue()">Get Identity Score</button>
-    </form>
-
-    <div id="result"></div>
+<div id="identity-steps" class="card">
+  <h2>Select who you are:</h2>
+  <div class="step">
+    <label>Age:</label><br>
+    <input type="radio" name="age" value="young"> Young<br>
+    <input type="radio" name="age" value="old"> Old<br>
   </div>
+  <div class="step">
+    <label>Education:</label><br>
+    <input type="radio" name="education" value="high school"> High School<br>
+    <input type="radio" name="education" value="college"> College<br>
+    <input type="radio" name="education" value="PhD"> PhD<br>
+  </div>
+  <div class="step">
+    <label>Attitude toward authority:</label><br>
+    <input type="radio" name="authority" value="anti-authority"> Anti-authority<br>
+    <input type="radio" name="authority" value="pro-authority"> Pro-authority<br>
+  </div>
+</div>
 
-  <script>
-    function toggleTheme() {
-      document.body.classList.toggle('light-theme');
-    }
+<div id="opposed-steps" class="card">
+  <h2>Select who you're opposed to:</h2>
+  <div class="step">
+    <label>Opposed Age Group:</label><br>
+    <input type="radio" name="opp-age" value="young"> Young<br>
+    <input type="radio" name="opp-age" value="old"> Old<br>
+  </div>
+  <div class="step">
+    <label>Opposed Education Level:</label><br>
+    <input type="radio" name="opp-education" value="high school"> High School<br>
+    <input type="radio" name="opp-education" value="college"> College<br>
+    <input type="radio" name="opp-education" value="PhD"> PhD<br>
+  </div>
+  <div class="step">
+    <label>Opposed Authority Stance:</label><br>
+    <input type="radio" name="opp-authority" value="anti-authority"> Anti-authority<br>
+    <input type="radio" name="opp-authority" value="pro-authority"> Pro-authority<br>
+  </div>
+</div>
 
-    function calculateVirtue() {
-      const identity = document.getElementById("identity").value;
-      const opponent = document.getElementById("opponent").value;
-
-      if (!identity || !opponent) {
-        document.getElementById("result").innerHTML = "<p>Please complete both selections.</p>";
-        return;
-      }
-
-      let score = 50;
-      let reflection = "A basic score has been calculated based on your selected identity and opposition.";
-
-      if (identity.includes("Progressive") && opponent.includes("conservative")) score += 10;
-      if (identity.includes("Conservative") && opponent.includes("liberal")) score += 10;
-      if (identity.includes("Young") && opponent.includes("authoritative")) score -= 5;
-      if (identity.includes("Old") && opponent.includes("ignorant youth")) score -= 5;
-
-      document.getElementById("result").innerHTML = `
-        <h2>Your Portrayed Virtue Score: ${score}/100</h2>
-        <p>${reflection}</p>
-        <p>Would you like to test your score with situational dilemmas?</p>
-        <button onclick="alert('Next tier coming soon...')">Continue to Tier 2</button>
-      `;
-    }
-  </script>
-</body>
-</html>
+<button onclick="startVirtueTest()">Start Test</button>
